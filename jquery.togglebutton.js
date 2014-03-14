@@ -31,38 +31,51 @@
             return this.oOptions;
         },
 
-        on: function () {
+        /**
+         * @param {jQuery.Event} [oEvent]
+         * @returns {undefined}
+         */
+        on: function (oEvent) {
             this.getEl().addClass(ToggleButton.CLASS_NAME_ON);
-            this.callUserEventHandler('on');
-            this.callUserEventHandler('both');
+            this.callUserEventHandler('on', [oEvent]);
+            this.callUserEventHandler('both', [oEvent]);
         },
 
-        off: function () {
+        /**
+         * @param {jQuery.Event} [oEvent]
+         * @returns {undefined}
+         */
+        off: function (oEvent) {
             this.getEl().removeClass(ToggleButton.CLASS_NAME_ON);
-            this.callUserEventHandler('off');
-            this.callUserEventHandler('both');
+            this.callUserEventHandler('off', [oEvent]);
+            this.callUserEventHandler('both', [oEvent]);
         },
 
         isOn: function () {
             return this.getEl().is('.' + ToggleButton.CLASS_NAME_ON);
         },
 
-        toggle: function () {
+        /**
+         * @param {jQuery.Event} [oEvent]
+         * @returns {undefined}
+         */
+        toggle: function (oEvent) {
             if (this.isOn()) {
-                this.off();
+                this.off(oEvent);
             } else {
-                this.on();
+                this.on(oEvent);
             }
         },
 
         /**
          * @private
          * @param {String} eventName
+         * @param {Array} aArgument
          * @returns {Boolean}
          */
-        callUserEventHandler: function (eventName) {
+        callUserEventHandler: function (eventName, aArgument) {
             if (typeof this.getOptions()[eventName] === 'function') {
-                this.getOptions()[eventName].call(this);
+                this.getOptions()[eventName].apply(this, aArgument);
                 return true;
             }
 
@@ -93,8 +106,8 @@
 
                 oButtonEl
                     .data('toggleButton', new ToggleButton(oButtonEl, oOptions))
-                    .click(function () {
-                        jQuery(this).data('toggleButton').toggle();
+                    .click(function (oEvent) {
+                        jQuery(this).data('toggleButton').toggle(oEvent);
                         return false;
                     });
             });

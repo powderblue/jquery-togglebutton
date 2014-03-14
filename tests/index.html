@@ -35,6 +35,10 @@
             <a href="javascript:">Test 2</a>
         </p>
 
+        <p class="test" id="test_3">
+            <a href="javascript:">Test 3</a>
+        </p>
+
 <script type="text/javascript">
 /*globals jQuery, document, window*/
 
@@ -50,9 +54,26 @@ jQuery(document).ready(function () {
 
     jQuery('#test_2 > a').toggleButton({
         both: function () {
-            window.alert(this.getEl().text() + ' switched ' + (this.isOn() ? 'on' : 'off'));
+            window.alert(this.getEl().text() + ': ' + (this.isOn() ? 'on' : 'off') + ' in `both`');
         }
     });
+
+    jQuery('#test_3 > a').toggleButton({
+        both: function (oEvent) {
+            window.alert(this.getEl().text() + ': `both` called ' + (oEvent ? 'WITH' : 'without') + ' event');
+        },
+
+        on: function (oEvent) {
+            window.alert(this.getEl().text() + ': `on` called ' + (oEvent ? 'WITH' : 'without') + ' event');
+        },
+
+        off: function (oEvent) {
+            window.alert(this.getEl().text() + ': `off` called ' + (oEvent ? 'WITH' : 'without') + ' event');
+        }
+    });
+
+    jQuery('#test_3 > a').data('toggleButton').on();
+    jQuery('#test_3 > a').data('toggleButton').off();
 });
 </script>
     </body>
