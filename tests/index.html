@@ -21,8 +21,7 @@
 
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
-        <!--Test the minified version; this will help remind us to minify the JavaScript-->
-        <script src="../jquery.togglebutton.min.js"></script>
+        <script src="../jquery.togglebutton.js"></script>
     </head>
 
     <body>
@@ -30,6 +29,10 @@
 
         <p class="test" id="test_1">
             <a href="javascript:">Test 1</a>
+        </p>
+
+        <p class="test" id="test_2">
+            <a href="javascript:">Test 2</a>
         </p>
 
 <script type="text/javascript">
@@ -42,6 +45,12 @@ jQuery(document).ready(function () {
         },
         off: function () {
             window.alert(this.getEl().text() + ' switched off');
+        }
+    });
+
+    jQuery('#test_2 > a').toggleButton({
+        both: function () {
+            window.alert(this.getEl().text() + ' switched ' + (this.isOn() ? 'on' : 'off'));
         }
     });
 });

@@ -34,11 +34,13 @@
         on: function () {
             this.getEl().addClass(ToggleButton.CLASS_NAME_ON);
             this.callUserEventHandler('on');
+            this.callUserEventHandler('both');
         },
 
         off: function () {
             this.getEl().removeClass(ToggleButton.CLASS_NAME_ON);
             this.callUserEventHandler('off');
+            this.callUserEventHandler('both');
         },
 
         isOn: function () {
@@ -72,8 +74,9 @@
 
         /**
          * Options:
-         * - on: Function to call when the button is switched on.
-         * - off: Function to call when the button is switched off.
+         * - `on`: Function to call when the button is switched on.
+         * - `off`: Function to call when the button is switched off.
+         * - `both`: Function to call when the button is switched on or off.
          * 
          * Examples:
          * - A toggle button can be switched on by calling `el.data('toggleButton').on()`.
