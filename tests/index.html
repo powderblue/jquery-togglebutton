@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jquery-togglebutton</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <style type="text/css">
+            .test > a {
+                display: block;
+                width: 90px;
+                text-align: center;
+                border: 2px outset;
+            }
+
+            .test > a.toggle_button__on {
+                background-color: #afa;
+                border-style: inset;
+            }
+        </style>
+
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+        <!--Test the minified version; this will help remind us to minify the JavaScript-->
+        <script src="../jquery.togglebutton.min.js"></script>
+    </head>
+
+    <body>
+        <h1>jquery-togglebutton</h1>
+
+        <p class="test" id="test_1">
+            <a href="javascript:">Test 1</a>
+        </p>
+
+<script type="text/javascript">
+/*globals jQuery, document, window*/
+
+jQuery(document).ready(function () {
+    jQuery('#test_1 > a').toggleButton({
+        on: function () {
+            window.alert(this.getEl().text() + ' switched on');
+        },
+        off: function () {
+            window.alert(this.getEl().text() + ' switched off');
+        }
+    });
+});
+</script>
+    </body>
+</html>
