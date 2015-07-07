@@ -1,69 +1,101 @@
+/*jslint this: true*/
 /*globals jQuery*/
 /**
- * Very simple jQuery plugin that turns any element into a toggle button.
- * 
+ * Basic jQuery plugin that turns any element into a toggle button.
+ *
  * @author Dan Bettles <dan@powder-blue.com>
+ * @copyright Powder Blue Ltd 2014
+ * @license MIT
  */
 
-(function (jQuery) {
+(function () {
+    'use strict';
+
+    /**
+     * @class
+     * @param {jQuery} oButtonEl
+     * @param {Object} oOptions
+     */
     function ToggleButton(oButtonEl, oOptions) {
         this.setEl(oButtonEl);
         this.setOptions(oOptions);
     }
 
+    /**
+     * @type {String}
+     */
     ToggleButton.CLASS_NAME_ON = 'toggle_button__on';
 
     ToggleButton.prototype = {
 
+        /**
+         * @private
+         * @param {jQuery} oEl
+         * @returns {undefined}
+         */
         setEl: function (oEl) {
             this.oEl = oEl;
         },
 
+        /**
+         * @returns {jQuery}
+         */
         getEl: function () {
             return this.oEl;
         },
 
+        /**
+         * @private
+         * @param {Object} oOptions
+         * @returns {undefined}
+         */
         setOptions: function (oOptions) {
             this.oOptions = oOptions;
         },
 
+        /**
+         * @returns {Object}
+         */
         getOptions: function () {
             return this.oOptions;
         },
 
         /**
-         * @param {jQuery.Event} [oEvent]
+         * @param {Variant} [arg,...]
          * @returns {undefined}
          */
-        on: function (oEvent) {
+        on: function (arg) {
             this.getEl().addClass(ToggleButton.CLASS_NAME_ON);
-            this.callUserEventHandler('on', [oEvent]);
-            this.callUserEventHandler('both', [oEvent]);
+            this.callUserEventHandler('on', arguments);
+            this.callUserEventHandler('both', arguments);
         },
 
         /**
-         * @param {jQuery.Event} [oEvent]
+         * @param {Variant} [arg,...]
          * @returns {undefined}
          */
-        off: function (oEvent) {
+        off: function (arg) {
             this.getEl().removeClass(ToggleButton.CLASS_NAME_ON);
-            this.callUserEventHandler('off', [oEvent]);
-            this.callUserEventHandler('both', [oEvent]);
-        },
-
-        isOn: function () {
-            return this.getEl().is('.' + ToggleButton.CLASS_NAME_ON);
+            this.callUserEventHandler('off', arguments);
+            this.callUserEventHandler('both', arguments);
         },
 
         /**
-         * @param {jQuery.Event} [oEvent]
+         * @returns {Boolean}
+         */
+        isOn: function () {
+            return this.getEl().hasClass(ToggleButton.CLASS_NAME_ON);
+        },
+
+        /**
+         * @param {Variant} [arg,...]
          * @returns {undefined}
          */
-        toggle: function (oEvent) {
+        toggle: function (arg) {
             if (this.isOn()) {
-                this.off(oEvent);
+                this.off.apply(this, arguments);
             } else {
-                this.on(oEvent);
+                this.on.apply(this, arguments);
             }
         },
 
@@ -74,8 +106,10 @@
          * @returns {Boolean}
          */
         callUserEventHandler: function (eventName, aArgument) {
-            if (typeof this.getOptions()[eventName] === 'function') {
-                this.getOptions()[eventName].apply(this, aArgument);
+            var handler = this.getOptions()[eventName];
+
+            if (typeof handler === 'function') {
+                handler.apply(this, aArgument);
                 return true;
             }
 
@@ -90,13 +124,13 @@
          * - `on`: Function to call when the button is switched on.
          * - `off`: Function to call when the button is switched off.
          * - `both`: Function to call when the button is switched on or off.
-         * 
+         *
          * Examples:
          * - A toggle button can be switched on by calling `el.data('toggleButton').on()`.
          * - A toggle button can be switched off by calling `el.data('toggleButton').off()`.
          * - The state of a toggle button can be toggled by calling `el.data('toggleButton').toggle()`.
          * - The state of a toggle button can be fetched by calling `el.data('toggleButton').isOn()`.
-         * 
+         *
          * @param {Object} [oOptions]
          * @returns {jQuery}
          */
@@ -107,10 +141,10 @@
                 oButtonEl
                     .data('toggleButton', new ToggleButton(oButtonEl, oOptions))
                     .click(function (oEvent) {
+                        oEvent.preventDefault();
                         jQuery(this).data('toggleButton').toggle(oEvent);
-                        return false;
                     });
             });
         }
     });
-}(jQuery));
+}());

@@ -19,7 +19,7 @@
             }
         </style>
 
-        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
         <script src="../jquery.togglebutton.js"></script>
     </head>
@@ -39,41 +39,56 @@
             <a href="javascript:">Test 3</a>
         </p>
 
+        <p class="test" id="test_4">
+            <a href="javascript:">Test 4</a>
+        </p>
+
 <script type="text/javascript">
-/*globals jQuery, document, window*/
+/*jslint this: true*/
+/*globals jQuery, document, console*/
 
 jQuery(document).ready(function () {
+    'use strict';
+
     jQuery('#test_1 > a').toggleButton({
         on: function () {
-            window.alert(this.getEl().text() + ' switched on');
+            console.log(this.getEl().text(), ':', 'on');
         },
         off: function () {
-            window.alert(this.getEl().text() + ' switched off');
+            console.log(this.getEl().text(), ':', 'off');
         }
     });
 
     jQuery('#test_2 > a').toggleButton({
         both: function () {
-            window.alert(this.getEl().text() + ': ' + (this.isOn() ? 'on' : 'off') + ' in `both`');
+            console.log(this.getEl().text(), ':', (this.isOn() ? 'on' : 'off') + ' in `both`');
         }
     });
 
     jQuery('#test_3 > a').toggleButton({
         both: function (oEvent) {
-            window.alert(this.getEl().text() + ': `both` called ' + (oEvent ? 'WITH' : 'without') + ' event');
+            console.log(this.getEl().text(), ':', '`both` called' + (oEvent instanceof jQuery.Event ? ' with event' : ''));
         },
 
         on: function (oEvent) {
-            window.alert(this.getEl().text() + ': `on` called ' + (oEvent ? 'WITH' : 'without') + ' event');
+            console.log(this.getEl().text(), ':', '`on` called' + (oEvent instanceof jQuery.Event ? ' with event' : ''));
         },
 
         off: function (oEvent) {
-            window.alert(this.getEl().text() + ': `off` called ' + (oEvent ? 'WITH' : 'without') + ' event');
+            console.log(this.getEl().text(), ':', '`off` called' + (oEvent instanceof jQuery.Event ? ' with event' : ''));
         }
     });
 
     jQuery('#test_3 > a').data('toggleButton').on();
     jQuery('#test_3 > a').data('toggleButton').off();
+
+    jQuery('#test_4 > a').toggleButton({
+        on: function (foo, bar) {
+            console.log(this.getEl().text(), ':', foo, bar);
+        }
+    });
+
+    jQuery('#test_4 > a').data('toggleButton').on('baz', 'qux');
 });
 </script>
     </body>
