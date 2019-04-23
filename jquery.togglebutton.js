@@ -140,7 +140,7 @@
 
                 oButtonEl
                     .data('toggleButton', new ToggleButton(oButtonEl, oOptions))
-                    .click(function (oEvent) {
+                    .on("click", function (oEvent) {
                         oEvent.preventDefault();
                         jQuery(this).data('toggleButton').toggle(oEvent);
                     });
